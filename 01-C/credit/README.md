@@ -17,7 +17,7 @@ That’s kind of confusing, so let’s try an example with David’s Visa: 40036
 
 For the sake of discussion, let’s first underline every other digit, starting with the number’s second-to-last digit:
 
-4003600000000014
+![alt text](img.png)
 
 Okay, let’s multiply each of the underlined digits by 2:
 
