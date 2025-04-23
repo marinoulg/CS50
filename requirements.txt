@@ -5,3 +5,5 @@ check50
 compare50
 render50
 submit50
+style50
+libmagic
