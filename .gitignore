@@ -1,2 +1,22 @@
 .DS_Store
 .python-version
+# Compiled object files
+*.o
+
+# Compiled binary files (executables)
+a.out
+*.out
+*.exe
+
+# Backup files and other editor stuff
+*~
+*.swp
+.DS_Store
+
+# Debugging files
+core
+
+# Files with no extension (common for C binaries)
+*
+!*.c
+!*.h
