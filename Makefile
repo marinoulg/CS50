@@ -145,3 +145,8 @@ uninstall:
 	rm -rf $(DESTDIR)/src/cs50.c
 	rm -f $(addprefix $(DESTDIR)/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
 	rm -f $(addprefix $(DESTDIR)/$(MANDIR)/, get_*.3)
+
+FILE ?= file
+
+$(FILE): $(FILE).c
+	clang $(FILE).c -lcs50 -o $(FILE)

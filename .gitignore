@@ -1,5 +1,5 @@
-.DS_Store
 .python-version
+
 # Compiled object files
 *.o
 
@@ -17,6 +17,7 @@ a.out
 core
 
 # Files with no extension (common for C binaries)
-*
-!*.c
-!*.h
+# *
+
+*.png
+Makefile
