@@ -21,3 +21,14 @@ core
 
 *.png
 Makefile
+
+# Compiled file names
+cash
+credit
+mario
+hello
+caesar
+readability
+readability2
+scrabble
+substitution
