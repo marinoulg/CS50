@@ -33,11 +33,8 @@ bool is_tie(int min);
 void eliminate(int min);
 
 int get_index_candidates(string name);
-int count_preferences_for_one_rank(int rank, string name);
-void bubble_sort(int last_place_candidates[]);
-void initialize_votes();
-void bubble_sort_candidates(candidate candidates[]);
-
+bool is_eliminated(string name);
+void add_1_vote(int voter, int rank, string name);
 
 int main(int argc, string argv[])
 {
@@ -84,6 +81,11 @@ int main(int argc, string argv[])
                 printf("Invalid vote.\n");
                 return 4;
             }
+            else
+            {
+              vote(i,j,name);
+            }
+
         }
 
         printf("\n");
@@ -131,30 +133,15 @@ int main(int argc, string argv[])
     return 0;
 }
 
-int get_index_candidates(string name)
-{
-  for (int i = 0; i < candidate_count; i++)
-  {
-    if (strcmp(name, candidates[i].name) == 0)
-      {
-          return i;
-      }
-  }
-  return -1;
-}
-
 // Record preference if vote is valid
 bool vote(int voter, int rank, string name)
 {
-    // TODO
-    for (int i = 0; i < candidate_count; i++)
+    // Example: the first voter's top preferred candidate (preferences[0][0]) is name (= Alice ?, // idx = 0)
+    int idx = get_index_candidates(name);
+    if (idx != -1) // Meaning, if the vote is valid
     {
-      if (strcmp(name, candidates[i].name) == 0)
-      {
-          int idx = get_index_candidates(name);
-          preferences[i][rank] = idx;
-          return true;
-      }
+      preferences[voter][rank] = idx;
+      return true;
     }
     return false;
 }
@@ -162,8 +149,18 @@ bool vote(int voter, int rank, string name)
 // Tabulate votes for non-eliminated candidates
 void tabulate(void)
 {
-    // TODO
-    return;
+    // Update vote counts for all non-eliminated candidates.
+    // string name = "Alice";
+    int rank = 0;
+
+    for (int idx = 0; idx < MAX_CANDIDATES; idx++)
+    {
+        string name = candidates[idx].name;
+        for (int voter_idx = 0; voter_idx < MAX_VOTERS; voter_idx++)
+        {
+          add_1_vote(voter_idx, rank, name); // rank starts at 0, but recursive function so if candidate whose rank is 0 is eliminated, rank += 1, aka it goes to candidate whose rank is 1 (and if eliminated, recursive again)
+        }
+    }
 }
 
 // Print the winner of the election, if there is one
@@ -190,102 +187,54 @@ bool is_tie(int min)
 // Eliminate the candidate (or candidates) in last place
 void eliminate(int min)
 {
-    // int rank = 0;
-    // int last_place_candidates[MAX_CANDIDATES]; // Array whose index is the number of votes a candidate received in the last place of the ballot
     // TODO
-    // for (int i = 0; i < candidate_count; i++)
-    // {
-    //   // last_place_candidates[i] = count_preferences_for_one_candidate(rank, i);
-
-    // }
-
-    bubble_sort_candidates(candidates);
-    if (candidates[0].votes < candidates[1].votes)
-    {
-      // eliminate candidates[0].name
-      candidates[0].eliminated = true;
-    }
-
-
-
-    // if (last_place_candidates[0] < last_place_candidates[1])
-    // {
-    //   // eliminate candidate whose count_pref(rank, idx=?) equals last_place_candidates[0]
-    // }
-
-
     return;
 }
 
-void bubble_sort_candidates(candidate candidates[])
-{
-    int switched = 0;
-    for (int i = 0; i < (candidate_count - 1); i++)
-    {
-      // Bubble sort by ascending order
-      for (int i = 0; i < (candidate_count - 1); i++)
-          {
-            if (candidates[i].votes > candidates[i+1].votes)
-            {
-                candidate tmp_candidate = candidates[i];
-                candidates[i] = candidates[i+1];
-                candidates[i+1] = tmp_candidate;
-                switched += 1;
-                // printf("Candidates %s and %s switched\n", candidates[i+1].name, candidates[i].name);
-            }
-          }
-      if (switched == 0)
-      {
-            break;
-      }
-      }
-}
-
-
-void initialize_votes()
+// Others
+int get_index_candidates(string name)
 {
   for (int i = 0; i < candidate_count; i++)
-    {
-        candidates[i].votes = 0;
-    }
+  {
+    if (strcmp(name, candidates[i].name) == 0)
+      {
+          return i;
+      }
+  }
+  return -1;
 }
 
-int count_preferences_for_one_rank(int rank, string name)
+bool is_eliminated(string name)
 {
-    int idx = get_index_candidates(name);
-    initialize_votes();
-    int count = 0;
-    for (int i = 0; i < candidate_count; i++)
+  for (int i = 0; i < candidate_count; i++)
+  {
+    if (candidates[i].eliminated == true)
+      {
+          return true;
+      }
+  }
+  return false;
+}
+
+void add_1_vote(int voter, int rank, string name)
+{
+    if (vote(voter, rank, name) == true)
     {
-        if (preferences[i][rank] == idx) // if 3 candidates, and "Alice" is candidate index 0, count the number of times she was place rank = 0 for example
+        if (is_eliminated(name) == false)
         {
-            count += 1;
-            candidates[i].votes += 1;
+            for (int i = 0; i < candidate_count; i++)
+            {
+              if (strcmp(candidates[i].name, name) == 0)
+                {
+                  candidates[i].votes += 1;
+                }
+            }
+        }
+        else // if candidate has indeed been eliminated, counsider instead the next choice of the voter
+        {
+          rank += 1;
+          add_1_vote(voter, rank, name);
         }
     }
-    return count;
+    return;
 }
-
-// void bubble_sort(int last_place_candidates[])
-// {
-//     int switched = 0;
-//     for (int i = 0; i < (candidate_count - 1); i++)
-//     {
-//       // Bubble sort by descending order
-//       for (int i = 0; i < (candidate_count - 1); i++)
-//           {
-//             if (last_place_candidates[i] < last_place_candidates[i+1])
-//             {
-//                 int tmp_candidate = last_place_candidates[i];
-//                 last_place_candidates[i] = last_place_candidates[i+1];
-//                 last_place_candidates[i+1] = tmp_candidate;
-//                 switched += 1;
-//                 // printf("Candidates %s and %s switched\n", candidates[i+1].name, candidates[i].name);
-//             }
-//           }
-//       if (switched == 0)
-//       {
-//             break;
-//       }
-//     }
-// }
