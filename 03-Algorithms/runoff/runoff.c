@@ -35,6 +35,8 @@ void eliminate(int min);
 int get_index_candidates(string name);
 bool is_eliminated(string name);
 void add_1_vote(int voter, int rank, string name);
+int recursive_find_min(int idx_min_candidate);
+bool recursive_is_tie(int idx);
 
 int main(int argc, string argv[])
 {
@@ -84,6 +86,7 @@ int main(int argc, string argv[])
             else
             {
               vote(i,j,name);
+              printf("Ballot %i voted for their %ist preference for %s\n", i,j, name);
             }
 
         }
@@ -92,12 +95,15 @@ int main(int argc, string argv[])
     }
 
     // Keep holding runoffs until winner exists
+    printf("We hold a runoff\n");
     while (true)
     {
         // Calculate votes given remaining candidates
+        printf("We tabulate votes");
         tabulate();
 
         // Check if election has been won
+        printf("Does the election have a winner?\n");
         bool won = print_winner();
         if (won)
         {
@@ -107,6 +113,9 @@ int main(int argc, string argv[])
         // Eliminate last-place candidates
         int min = find_min();
         bool tie = is_tie(min);
+        printf("The minimum number of votes for 1 candidate is %i\n", min);
+        printf("Is this election a tie? %i\n", tie);
+        printf("\n");
 
         // If tie, everyone wins
         if (tie)
@@ -122,15 +131,74 @@ int main(int argc, string argv[])
         }
 
         // Eliminate anyone with minimum number of votes
+        printf("The election is not a tie, and so we eliminate candidates\n");
         eliminate(min);
 
         // Reset vote counts back to zero
         for (int i = 0; i < candidate_count; i++)
         {
-            candidates[i].votes = 0;
+          printf("Before, candidate %s had %i votes\n", candidates[i].name, candidates[i].votes);
+          candidates[i].votes = 0;
+          printf("After resetting votes, candidate %s had %i votes\n", candidates[i].name, candidates[i].votes);
         }
     }
     return 0;
+}
+
+int main2(int argc, string argv[])
+{
+  // Check for invalid usage
+  if (argc < 2)
+  {
+      printf("Usage: runoff [candidate ...]\n");
+      return 1;
+  }
+
+  // Populate array of candidates
+  candidate_count = argc - 1;
+  if (candidate_count > MAX_CANDIDATES)
+  {
+      printf("Maximum number of candidates is %i\n", MAX_CANDIDATES);
+      return 2;
+  }
+  for (int i = 0; i < candidate_count; i++)
+  {
+      candidates[i].name = argv[i + 1];
+      candidates[i].votes = 0;
+      candidates[i].eliminated = false;
+  }
+
+  voter_count = get_int("Number of voters: ");
+  if (voter_count > MAX_VOTERS)
+  {
+      printf("Maximum number of voters is %i\n", MAX_VOTERS);
+      return 3;
+  }
+
+  // Keep querying for votes
+  for (int i = 0; i < voter_count; i++)
+  {
+
+      // Query for each rank
+      for (int j = 0; j < candidate_count; j++)
+      {
+          string name = get_string("Rank %i: ", j + 1);
+
+          // Record vote, unless it's invalid
+          if (!vote(i, j, name))
+          {
+              printf("Invalid vote.\n");
+              return 4;
+          }
+          else
+          {
+            vote(i,j,name);
+            printf("Ballot %i voted for their %ist preference for %s\n", i,j, name);
+          }
+      }
+      printf("\n");
+  }
+  return 0;
 }
 
 // Record preference if vote is valid
@@ -166,7 +234,15 @@ void tabulate(void)
 // Print the winner of the election, if there is one
 bool print_winner(void)
 {
-    // TODO
+    int MAJORITY = ((int) MAX_CANDIDATES/2) + 1; // that way, it truncates MAX_CANDIDATES/2 if float
+    for (int i = 0; i < MAX_CANDIDATES; i++)
+    {
+        if (candidates[i].votes >= MAJORITY)
+        {
+          printf("%s\n", candidates[i].name);
+          return true;
+        }
+    }
     return false;
 }
 
@@ -174,22 +250,77 @@ bool print_winner(void)
 int find_min(void)
 {
     // TODO
-    return 0;
+    int j = 0;
+    int idx_min_candidate = recursive_find_min(idx_min_candidate);
+
+    return candidates[idx_min_candidate].votes;
 }
 
-// Return true if the election is tied between all candidates, false otherwise
+int recursive_find_min(int idx_min_candidate)
+{
+  int temp_min = candidates[idx_min_candidate].votes;
+  for (int i = 0; i < MAX_CANDIDATES; i++)
+  {
+    if (candidates[i].votes < temp_min && candidates[i].votes > 0)
+    {
+      temp_min = candidates[i].votes;
+      idx_min_candidate += 1;
+      recursive_find_min(idx_min_candidate);
+    }
+    else if (candidates[i].votes > temp_min)
+    {
+      return temp_min;
+    }
+    else
+    {
+      temp_min = candidates[i].votes;
+      idx_min_candidate += 1;
+      recursive_find_min(idx_min_candidate);
+    }
+  }
+  return -2;
+}
+
+// Return true if the election is tied between all the remaining candidates, false otherwise
 bool is_tie(int min)
 {
-    // TODO
-    return false;
+  int sum = 0; // How many candidates have the same number of votes, which is the least number of votes
+  int total_possible = 0; // How many candidates are not (yet) eliminated
+  for (int i = 0; i < MAX_CANDIDATES; i++)
+  {
+    if (candidates[i].eliminated == false)
+    {
+        total_possible += 1;
+        if (candidates[i].votes == min)
+        {
+          sum += 1;
+        }
+    }
+  }
+  if (sum == total_possible)
+  {
+    return true;
+  }
+  return false;
 }
 
-// Eliminate the candidate (or candidates) in last place
+
+
+// Eliminate the candidate (or candidates) in last place, aka who has the minimum number of votes
 void eliminate(int min)
 {
     // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+      if (candidates[i].votes == min)
+      {
+        candidates[i].eliminated = true;
+      }
+    }
     return;
 }
+
+
 
 // Others
 int get_index_candidates(string name)
@@ -238,3 +369,42 @@ void add_1_vote(int voter, int rank, string name)
     }
     return;
 }
+
+
+
+
+// // Return true if the election is tied between all candidates, false otherwise
+// bool is_tie_myway(int min) // why take argument min?
+// {
+//   int idx = 0;
+//   bool boolean = recursive_is_tie(idx);
+//   if (boolean == true)
+//   {
+//     return true;
+//   }
+//   return false;
+// }
+
+// bool recursive_is_tie(int idx)
+// {
+//     int vote_candidate = candidates[idx].votes;
+//     for (int i = 0; i < MAX_CANDIDATES; i++)
+//     {
+//         if (vote_candidate > 0 && vote_candidate == candidates[i].votes)
+//         {
+//           return true;
+//         }
+//         else if (vote_candidate == 0)
+//         {
+//           idx += 1;
+//           vote_candidate = candidates[idx].votes;
+//           recursive_is_tie(idx);
+//         }
+//         else
+//         {
+//           return true;
+//         }
+
+//     }
+//     return false;
+// }
