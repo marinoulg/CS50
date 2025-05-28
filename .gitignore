@@ -35,3 +35,10 @@ substitution
 plurality
 runoff
 # tideman
+filter
+volume
+*.bmp
+*.wav
+*.csv
+*.txt
+*.plist
