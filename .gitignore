@@ -42,3 +42,6 @@ volume
 *.csv
 *.txt
 *.plist
+inheritance
+# recover
+# card.raw
