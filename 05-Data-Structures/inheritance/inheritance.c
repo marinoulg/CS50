@@ -70,30 +70,19 @@ person *create_family(int generations)
 
         (*child).parents[0] = parent0;
         (*child).parents[1] = parent1;
-        printf("we are here\n");
-        printf("parent0: %p\n", parent0);
-        printf("parent1: %p\n", parent1);
-        printf("\n");
 
         // TODO: Randomly assign current person's alleles based on the alleles of their parents
         // inheriting 1 allele from each parent at random
 
         // get the alleles
         int r0 = random_0_or_1();
-        printf("r0 is %i\n", r0);
-        printf("%p\n", parent0);
-        char allele0 = (*parent0).alleles[r0]; // segmentation fault
-        // ne peux pas aller à l'attribut de l'adresse de parents, car adresse de parents n'existe pas
-
+        char allele0 = (*parent0).alleles[r0];
         int r1 = random_0_or_1();
-        printf("r1 is %i\n", r1);
         char allele1 = (*parent1).alleles[r1];
 
         // assign the alleles to the child
         child->alleles[0] = allele0;
         child->alleles[1] = allele1;
-
-        printf("child's alleles have been updated\n");
 
     }
 
@@ -122,7 +111,7 @@ person *create_family(int generations)
     }
 
     // TODO: Return newly created person
-    return NULL;
+    return child;
 }
 
 // Free `p` and all ancestors of `p`.
@@ -143,7 +132,7 @@ void free_family(person *p)
     free_family(mom_pointer);
 
     // TODO: Free child
-    // use free(child) ?
+    // use free(child)
     free(p);
 }
 
