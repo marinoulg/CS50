@@ -1,0 +1,59 @@
+To calculate this aura, I am assuming that the 100 songs that were provided to me are in order of how much they were listened to (id of 1 being the most listened to, and id of 100 being the least out of this user's 100 most listened songs in 2018).
+Considering an audio aura is, as stated, dependent upon one's average energy, valence, and danceability scores, we could here compute the basic version of their averages using SQL code as such:
+
+```select avg(energy), avg(valence), avg(danceability) from songs;````
+
+As a bit of context, auras are defined as the following 6 colors, setting up 6 different moods :
+"Purple: This aura color pairs well with passionate music listeners. Purple auras tune in to get amped up, entertained, and moving while they navigate the twists and turns of their day.
+Green: Calm, analytical, and introspective are the traits that describe a green aura. These listeners gravitate toward complex music to tame their fast-moving minds.
+Pink: Often described as the hopeless romantics of the aura spectrum, pinks view the world with a sense of optimistic, childlike wonder.
+Orange: Oranges are the rebellious and bold type. They share a need for high-energy, confidence-boosting sounds.
+Yellow: Yellows like their music to align them to the goals of their day, fueling their need for focus, motivation, and self improvement all while reducing any nerves that could get in the way.
+Blue: Blues are wistful or emotional, and this hue reflects listeners who seek out music to feel their feelings out loud." (https://www.distractify.com/p/what-does-spotify-wrapped-audio-aura-mean).
+
+
+Understanding the data:
+1) Energy
+What is the lowest energy of a song? --> ```select energy from songs order by energy asc limit 1;```, aka 0.296
+What is the highest energy of a song? --> ```select energy from songs order by energy desc limit 1;```, aka 0.909
+Is the value full of outliers? --> Checking to see if the mode (most frequent value) and mean are similar: ```select count(*) from songs where energy >= 0.65906``, aka 53. There are indeed similar, so the average value we computed makes sense.
+
+2) Valence
+What is the lowest valence of a song? --> ```select valence from songs order by valence asc limit 1;```, aka 0.0796
+What is the highest valence of a song? --> ```select valence from songs order by valence desc limit 1;```, aka 0.931
+Is the value full of outliers? --> Checking to see if the mode (most frequent value) and mean are similar: ```select count(*) from songs where valence >= 0.484443``, aka 49. There are indeed similar, so the average value we computed makes sense.
+
+3) Danceability
+What is the lowest danceability of a song? --> ```select danceability  from songs order by danceability  asc limit 1;````, aka 0.258
+What is the highest danceability of a song? --> ```select danceability  from songs order by danceability  desc limit 1;```, aka 0.964
+Is the value full of outliers? --> Checking to see if the mode (most frequent value) and mean are similar: ```select count(*) from songs where danceability >= 0.71646``, aka 54. There are indeed similar, so the average value we computed makes sense.
+
+4) Which artists were the most listened to:
+```select artists.name, count(artists.name) as count from songs join artists on artists.id = songs.artist_id group by artists.name order by count desc;```, which returns the following (whose number of songs in the top 100 is at least 2):
+XXXTENTACION|6
+Post Malone|6
+Drake|4
+Marshmello|3
+Ed Sheeran|3
+The Weeknd|2
+Selena Gomez|2
+Ozuna|2
+Migos|2
+Maroon 5|2
+Khalid|2
+Kendrick Lamar|2
+Imagine Dragons|2
+Dua Lipa|2
+Clean Bandit|2
+Camila Cabello|2
+Calvin Harris|2
+Ariana Grande|2
+
+From these very (very) broad analyses, we may conclude that this person listened (broadly) as much slow-tempoed songs than high-tempoed songs (by lack of a better expression).
+However, by not taking into account "how much" one particular user has listened to each song (out of those 100 songs), aka by not taking into account a coefficient by which to multiply each song's energy, valence and danceability, we can only compute the most basic of averages, which would not be extremely relevant when willing to compute one's personal music aura for the year.
+Nevertheless, if I were to characterize this user's aura right now, and considering the average energy to be of 0.65906, the average valence to be of 0.484443, and the average danceability to be of 0.71646, and the analyses conducted above (such as this user's most listened artists), and also considering I could not find online the basis of the calculus of Spotify (meaning, which values are considered when it comes to a "calm" aura for example, when talking about valence, energy and danceability), I might say that this person was very much keeping up with pop-rap trends from 2018, and so, considering the descriptions of colors for auras as provided above, I would say they are a Purple aura music listener.
+
+To better calculate this aura:
+- get provided with the method of computing/calculating the aura from Spotify (or the Internet) based on actual ranges of numbers for each category (danceability, valence, energy etc.)
+- get provided with the number of times one particular user listened to each song, as to be (way) more precise when it comes to computing averages
+These two bullet points would already go a long way to providing more accurate decision-making as to the music aura of this listener, especially comparing to right now, when we could only (just) assume those values for analysis.
