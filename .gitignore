@@ -40,7 +40,8 @@ volume
 *.bmp
 *.wav
 *.csv
-*.txt
+*/speller/*/*.txt
+*/dna/sequences/*.txt
 *.plist
 inheritance
 # recover
