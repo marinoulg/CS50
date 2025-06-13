@@ -1,0 +1,143 @@
+The THIEF is: Bruce
+The city the thief ESCAPED TO: New York City
+The ACCOMPLICE is: Robin
+
+
+Interesting facts: The robbery, of id 295, took place at 10:15am, 3 witnesses.
+The people who mention the robbery from the interviews on the day of the theft are: Ruth, Eugene, and Raymond.
+
+We know that, according to Ruth, the thief left 10 minutes-ish after the theft, so at around 10:25am
+The license_plate on the car used after the theft is 1106N58.
+Whose person does this license plate belong to? 449774|Taylor|(286) 555-6063|1988161715|1106N58
+
+Who is Taylor, our suspect, in contact with?
+He received 3 calls from this number on the day of the theft: (771) 555-7880
+
+We also know, according to Raymond, that the thief called their partner for less than a minute to buy the earliest flight out of Fiftyville departing on the 29th of July 2024.
+This means the thief called this number: (676) 555-6554
+Whose person does this number belong to? 250277|James|(676) 555-6554|2438825627|Q13SVG6
+
+Which flight is Taylor taking?
+36|8|4|2024|7|29|8|20
+This means he is taking the flight whose id is 36, departing from airport_id 8 and arriving to airport_id 4
+Where from? 8|CSF|Fiftyville Regional Airport|Fiftyville
+Where to? 4|LGA|LaGuardia Airport|New York City
+
+We know, according to Eugene, that the thief withdrew money by the ATM on Leggett Street before 10:15am on the 28th of July 2024.
+To confirm the thief is indeed Taylor, let's check their bank withdrawals for the 28th of July 2024.
+Does one of these accounts belong to Taylor? Indeed, one of them IS Taylor, and he withdrew $60 on Leggett Street.
+
+So, if we come full circle:
+We now know that Taylor, the thief of the CS50 Duck, withdrew $60 on Leggett Street,
+before he went to the bakery to steal the duck.
+Right after the theft, he called his friend and accomplice James, via his own phone number
+(Taylor's) (286) 555-6063, whose phone number is (676) 555-6554, so that James would book
+a plane ticket for July 29th 2024 departing from airport_id 8, aka Fiftyville Regional Airport,
+and arriving to airport_id 4, aka LaGuardia Airport (New York City), at 8:20am.
+He then left the parking lot of the bakery at 10:35am with his car, license plate number 1106N58.
+
+Interestingly enough, we now know that Taylor will be flying alone on seat 6D, aka without James,
+to NYC, but we don't know where James might flight to.
+James is departing:
+  - from airport CSF|Fiftyville Regional Airport|Fiftyville to airport LGA|LaGuardia Airport|New York City on the 2024/7/30 at 1:55pm, flight id 10, seat 7C, or
+  - from airport LAX|Los Angeles International Airport|Los Angeles to airport CSF|Fiftyville Regional Airport|Fiftyville on the 2024/7/26 at 5:58pm, flight id 21, seat 6A, or
+  - from airport LGA|LaGuardia Airport|New York City to airport CSF|Fiftyville Regional Airport|Fiftyville on the 2024/7/30 at 9:46am, flight id 47, seat 9B
+
+To answer this question, we need to know if James is (or not) in Fiftyville. Let's check that by taking a look at his bank account and ATM transactions.
+It seems James has no bank account, so he could not have been located taking cash off an ATM in Fiftyville.
+Let's check his phone activity with Taylor: did he and James exchange calls?
+James has never called Taylor, and Taylor has only called James once, about 10 minutes after the robbery, for 43 seconds.
+
+Furthermore, according to the logs of the bakery, James's car was at the parking lot of the bakery on the 25th
+of July 2024, and also on the 29th of July 2024, which means he had not yet left Fiftyville, but also
+it means that he had to depart from Fiftyville. Worth noting: both times, he entered and left the parking
+lot after over 5 hours and on the same day. Taylor, on the other hand, had never been to the bakery before according to the logs of the bakery (of his car).
+
+This means that the flight James will be taking is from airport CSF|Fiftyville Regional Airport|Fiftyville to airport LGA|LaGuardia Airport|New York City on the 2024/7/30 at 1:55pm, flight id 10, seat 7C.
+We conclude here that he wishes to meet up with his friend Taylor.
+
+
+Understanding the motive:
+
+According to an interview given by James on February 5th 2024, James may have planned the robbery of the duck because of a very delicate situation,
+for which "every precaution has to be taken" so that "the great House of Ormstein, hereditary kings of Bohemia" would not be implicated in a scandal.
+The interview in question:
+26|James|2024|2|5|“The circumstances are of great delicacy, and every precaution has to be taken to quench what might grow to be an immense scandal and seriously compromise one of the reigning families of Europe. To speak plainly, the matter implicates the great House of Ormstein, hereditary kings of Bohemia.”
+
+In the case of the Irene Adler papers, Jose received help from the King of Bohemia, Wilhelm Gottsreich Sigismond von Ormstein, Grand Duke of Cassel-Felstein, and hereditary King of Bohemia,
+who gifed him something in return, "a little souvenir", on July 28th 2024. Was it the Duck? Who is Jose? What could be this scandal?
+The interview in question:
+158|Jose|2024|7|28|“Ah,” said he, “I forgot that I had not seen you for some weeks. It is a little souvenir from the King of Bohemia in return for my assistance in the case of the Irene Adler papers.”
+
+
+Further interrogations:
+Where on the flight will Taylor be seated? 6D.
+Is James with him? No.
+Did he and James exchange money? Difficult to say, as James has no bank account.
+
+---------- GOING AGAIN ----------
+
+Interesting facts: The robbery, of id 295, took place at 10:15am, 3 witnesses.
+The people who mention the robbery from the interviews on the day of the theft are: Ruth, Eugene, and Raymond.
+Their interviews:
+      - 161|Ruth|2024|7|28|Sometime within ten minutes of the theft, I saw the thief get into a car in the bakery parking lot and drive away. If you have security footage from the bakery parking lot, you might want to look for cars that left the parking lot in that time frame.
+      - 162|Eugene|2024|7|28|I don't know the thief's name, but it was someone I recognized. Earlier this morning, before I arrived at Emma's bakery, I was walking by the ATM on Leggett Street and saw the thief there withdrawing some money.
+      - 163|Raymond|2024|7|28|As the thief was leaving the bakery, they called someone who talked to them for less than a minute. In the call, I heard the thief say that they were planning to take the earliest flight out of Fiftyville tomorrow. The thief then asked the person on the other end of the phone to purchase the flight ticket.
+
+We know that, according to Ruth, the thief WITHIN left 10 minutes of the theft, so before 10:25am.
+So the cars leaving the parking lot of the bakery within 10 minutes of the theft are:
+      - 260|2024|7|28|10|16|exit|5P2BI95
+      - 261|2024|7|28|10|18|exit|94KL13X
+      - 262|2024|7|28|10|18|exit|6P58WS2
+      - 263|2024|7|28|10|19|exit|4328GD8
+      - 264|2024|7|28|10|20|exit|G412CB7
+      - 265|2024|7|28|10|21|exit|L93JTIZ
+      - 266|2024|7|28|10|23|exit|322W7JE
+      - 267|2024|7|28|10|23|exit|0NTHK55
+
+We know, according to Eugene, that the thief withdrew money by the ATM on Leggett Street before 10:15am on the 28th of July 2024.
+So, who are these people, and did they withdraw some money before the theft by the ATM on Leggett Street?
+By crossing these people with ATM transactions made on the day of the theft on Leggett Street, we get the list reduced to 4 suspects:
+      - 396669|Iman|(829) 555-5269|7049073643|L93JTIZ
+      - 467400|Luca|(389) 555-5198|8496433585|4328GD8
+      - 514354|Diana|(770) 555-1861|3592750733|322W7JE
+      - 686048|Bruce|(367) 555-5533|5773159633|94KL13X
+
+And the amounts they withdrew:
+      - 246|28500762|2024|7|28|Leggett Street|withdraw|48
+      - 267|49610011|2024|7|28|Leggett Street|withdraw|50
+      - 288|25506511|2024|7|28|Leggett Street|withdraw|20
+      - 336|26013199|2024|7|28|Leggett Street|withdraw|35
+
+So:
+      - 267|49610011|2024|7|28|Leggett Street|withdraw|50|686048|Bruce|(367) 555-5533|5773159633|94KL13X
+      - 336|26013199|2024|7|28|Leggett Street|withdraw|35|514354|Diana|(770) 555-1861|3592750733|322W7JE
+      - 288|25506511|2024|7|28|Leggett Street|withdraw|20|396669|Iman|(829) 555-5269|7049073643|L93JTIZ
+      - 246|28500762|2024|7|28|Leggett Street|withdraw|48|467400|Luca|(389) 555-5198|8496433585|4328GD8
+
+
+We also know, according to Raymond, that the thief called their partner for less than a minute as tehy were leaving the bakery to buy the earliest flight out of Fiftyville departing on the 29th of July 2024.
+Who have these 4 suspects, if any, called for less than a minute on the day of the theft --> 2 suspects:
+      - 267|49610011|2024|7|28|Leggett Street|withdraw|50|686048|Bruce|(367) 555-5533|5773159633|94KL13X|233|(367) 555-5533|(375) 555-8161|2024|7|28|45
+      - 336|26013199|2024|7|28|Leggett Street|withdraw|35|514354|Diana|(770) 555-1861|3592750733|322W7JE|255|(770) 555-1861|(725) 555-3243|2024|7|28|49
+
+Who are the possible accomplices of the possible suspects?
+      - suspect — Bruce, with accomplice: 864400|Robin|(375) 555-8161||4V16VO0
+      - suspect — Diana, with accomplice: 847116|Philip|(725) 555-3243|3391710505|GW362R6
+
+Which flight is the thief taking?
+      - 36|8|4|2024|7|29|8|20
+
+This means he is taking the flight whose id is 36, departing from airport_id 8 and arriving to airport_id 4
+Where from? 8|CSF|Fiftyville Regional Airport|Fiftyville
+Where to? 4|LGA|LaGuardia Airport|New York City
+
+Who, out of either Bruce or Diane, has a seat in flight id 36 to NYC?
+Only one, Bruce.
+      - 36|5773159633|4A|Bruce
+
+Understanding a motive:
+Has either Bruce or Robin been interviewed before? Only Bruce, on July 2nd 2024:
+      - 139|Bruce|2024|7|2|“We are close there now,” my friend remarked. “This fellow Merryweather is a bank director, and personally interested in the matter. I thought it as well to have Jones with us also. He is not a bad fellow, though an absolute imbecile in his profession. He has one positive virtue. He is as brave as a bulldog and as tenacious as a lobster if he gets his claws upon anyone. Here we are, and they are waiting for us.”
+
+Did they exchange money? Difficult to say.
