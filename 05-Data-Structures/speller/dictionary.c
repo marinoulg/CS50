@@ -17,14 +17,17 @@ typedef struct node
     struct node *next;
 } node;
 
+bool compare_two_words(const char *word, const char *poss_word);
+int length_bucket(int bucket);
+unsigned int hash(const char *word);
+bool load(const char *dictionary);
+unsigned int size(void);
+
 // TODO: Choose number of buckets in hash table
-// You will likely want to increase this depending on your own implementation of hash.
 const unsigned int N = 26;
 
 // Hash table
 node *table[N];
-// = an array of node pointers
-// = an array where every element in the array is a pointer to a node.
 
 bool compare_two_words(const char *word, const char *poss_word) // OK
 {
@@ -70,10 +73,8 @@ int length_bucket(int bucket) // OKKK
 }
 
 // Returns true if word is in dictionary, else false
-bool check(const char *word)
+bool check(const char *word) // OK
 {
-    // TODO
-
     // 1) in which bucket would the world be?
     int possible_bucket = hash(word);
     node *poss_word = table[possible_bucket];
@@ -83,42 +84,19 @@ bool check(const char *word)
     // 2) compare 2 words
     if (compare_two_words(word, poss_word->word)==1)
     {
-      // printf("yes true\n");
       return true;
     }
     else
     {
       int iterations = 0;
-      // if (compare_two_words(word, poss_word->word)!=1)
-      for (int i = 0; i<LENGTH_BUCKET; i++)
+      for (int i = 0; i < LENGTH_BUCKET; i++)
       {
-          // do
-          // {
-
           poss_word = poss_word->next;
-          //   iterations += 1;
-          // }
-          // while compare_two_words(word, poss_word->word);
           if (compare_two_words(word, poss_word->word)==1)
           {
             return true;
           }
-          break;
       }
-      // else
-      // {
-      //   printf("ABORT MISSION\n");
-      //   return false;
-      // }
-
-
-
-      // if (iterations > 12)
-      // {
-      //   printf("abort\n");
-      // }
-
-      // break;
       // if the word is in the list, it breaks out of the loop, and then we compare the strings to make sure
       // otherwise, if even the last word in the correct bucket could be the word, we compare them
       if (strcmp(poss_word->word, word) == 0)
@@ -134,9 +112,6 @@ bool check(const char *word)
       printf("false??\n");
       return false;
     }
-
-
-
 }
 
 // Hashes word to a number
@@ -250,9 +225,9 @@ int main(void)
     // printf("%s\n", table[2]->next->word);
     // printf("%s\n", table[2]->next->next->word);
 
-    compare_two_words("marin", "marin");
+    // compare_two_words("marin", "marin"); // OK
 
-    // bool true_false = check("zz");
-    // printf("\n1 is true, 0 is false? %i\n", true_false); // 1 is true, 0 is false
+    bool true_false = check("zz");
+    printf("\n1 is true, 0 is false? %i\n", true_false); // 1 is true, 0 is false
 
 }
