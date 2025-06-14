@@ -26,7 +26,7 @@ node *table[N];
 // = an array of node pointers
 // = an array where every element in the array is a pointer to a node.
 
-bool compare_two_words(const char *word, const char *poss_word) // OK ?
+bool compare_two_words(const char *word, const char *poss_word) // OK
 {
     // 1) in which bucket would the world be?
 
