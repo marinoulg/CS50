@@ -10,6 +10,8 @@
 
 #include "dictionary.h"
 
+char *DICT = "/Users/marinelegall/code/CS50/05-Data-Structures/speller/dictionaries/large";
+
 // Represents a node in a hash table
 typedef struct node
 {
@@ -20,7 +22,7 @@ typedef struct node
 bool compare_two_words(const char *word, const char *poss_word);
 int length_bucket(int bucket);
 unsigned int hash(const char *word);
-bool load(const char *dictionary);
+bool load(const char *DICT);
 unsigned int size(void);
 
 // TODO: Choose number of buckets in hash table
@@ -44,9 +46,10 @@ bool compare_two_words(const char *word, const char *poss_word) // OK
 int length_bucket(int bucket) // OKKK
 {
   node *myword = table[bucket];
-  int length = 1;
+  int length = 0;
   if (table[bucket] != NULL)
   {
+    length = 1;
     while (myword->next != NULL)
     {
       // printf("%s\n", myword->word);
@@ -121,15 +124,18 @@ unsigned int hash(const char *word) // OK FOR NOW
 }
 
 // Loads dictionary into memory, returning true if successful, else false
-bool load(const char *dictionary) // OKKKKK
+bool load(const char *DICT) // OKKKKK
 {
     // 1. open dictionary file
-    FILE *file = fopen(dictionary, "r");
+    printf("Trying to load file: %s\n", DICT);
+    FILE *file = fopen(DICT, "r");
 
     // 2. read strings from file one at a time
     if (file != NULL)
     {
-        char buffer[N];
+        // if I put ```char buffer[N];``` I'm overflowing the buffer when a word is longer than 25 characters — leading to undefined behavior and a segmentation fault with large dictionaries.
+        // bc this line is actually about how much space I'm allocating to read a word.
+        char buffer[LENGTH + 1]; // This ensures my buffer can safely hold the longest word + null terminator.
         int number_of_words = 0;
 
         while (fscanf(file, "%s", buffer) != -1)
@@ -166,17 +172,22 @@ bool load(const char *dictionary) // OKKKKK
                   myword->next = n;
                 }
             }
+            if (n == NULL)
+            {
+                fprintf(stderr, "Memory allocation failed\n");
+                return false;
+            }
         }
         fclose(file);
         // printf("\nNumber of words: %p\n", &number_of_words);
         printf("Number of words: %i\n", number_of_words);
-        return true;
+        // return true;
     }
     else
     {
       return false;
     }
-// return true;
+    return true;
 }
 
 // Returns number of words in dictionary if loaded, else 0 if not yet loaded
@@ -184,7 +195,6 @@ unsigned int size(void)// OK
 {
     // TODO
     printf("enter here at size\n");
-    char *dictionary = "/Users/marinelegall/code/CS50/05-Data-Structures/speller/dictionaries/small";
     int total_nb = 0;
     for (int i = 0; i < N; i++)
     {
@@ -242,7 +252,11 @@ bool check(const char *word) // OK
       for (int i = 0; i < LENGTH_BUCKET-1; i++) // -1 bc I already compared with the 1st one
       {
           poss_word = poss_word->next;
-          if (compare_two_words(word, poss_word->word)==1)
+          if (poss_word == NULL)
+          {
+            return false;
+          }
+          else if (compare_two_words(word, poss_word->word)==1)
           {
             return true;
           }
@@ -275,25 +289,33 @@ bool check(const char *word) // OK
 
 int main(void)
 {
-    char *dictionary = "/Users/marinelegall/code/CS50/05-Data-Structures/speller/dictionaries/small";
-    load(dictionary);
-    int total_words = size();
-    printf("\nthere are %i words in this dict\n", total_words);
-    // // int bucket = hash("zz");
-    // // printf("int %i\n", hello);
-    // // printf("length %i\n", length_bucket(2));
-    // // printf("length %i\n", length_bucket(11));
-    // printf("length of Z: %i\n", length_bucket(25)); // segmentation fault
-    // printf("%s\n", table[3]->word);
-    // printf("\n");
-    // printf("%s\n", table[2]->word);
-    // printf("%s\n", table[2]->next->word);
-    // printf("%s\n", table[2]->next->next->word);
+    if (load(DICT)==1)
+    {
+      printf("Loaded.\n");
+    }
+    else
+    {
+      printf("Loading failed.\n");
+    }
 
-    // compare_two_words("marin", "marin"); // OK
+    // printf("\nbefore size\n");
+    // int total_words = size();
+    // printf("\nthere are %i words in this dict\n", total_words);
+    // // // int bucket = hash("zz");
+    // // // printf("int %i\n", hello);
+    // // // printf("length %i\n", length_bucket(2));
+    // // // printf("length %i\n", length_bucket(11));
+    // // printf("length of Z: %i\n", length_bucket(25)); // segmentation fault
+    // // printf("%s\n", table[3]->word);
+    // // printf("\n");
+    // // printf("%s\n", table[2]->word);
+    // // printf("%s\n", table[2]->next->word);
+    // // printf("%s\n", table[2]->next->next->word);
 
-    bool true_false = check("zoro");
-    printf("\n1 is true, 0 is false? %i\n", true_false); // 1 is true, 0 is false
+    // // compare_two_words("marin", "marin"); // OK
+
+    // bool true_false = check("zoro");
+    // printf("\n1 is true, 0 is false? %i\n", true_false); // 1 is true, 0 is false
     // unload();
 
 }
