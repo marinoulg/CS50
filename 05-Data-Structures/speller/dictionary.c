@@ -49,70 +49,69 @@ int length_bucket(int bucket) // OKKK
   {
     while (myword->next != NULL)
     {
-      printf("%s\n", myword->word);
+      // printf("%s\n", myword->word);
       length += 1;
       myword = myword->next;
     }
 
-    if (table[bucket]->next == NULL)
-    {
-      while (myword->next != NULL)
-      {
-          myword = myword->next;
-          length += 1;
-      }
-    }
+    // if (table[bucket]->next == NULL)
+    // {
+    //   while (myword->next != NULL)
+    //   {
+    //       myword = myword->next;
+    //       length += 1;
+    //   }
+    // }
+    printf("length bucket done.\n");
     return length;
   }
   else
   {
     return -1;
   }
-
-
 }
 
 // Returns true if word is in dictionary, else false
-bool check(const char *word) // OK
-{
-    // 1) in which bucket would the world be?
-    int possible_bucket = hash(word);
-    node *poss_word = table[possible_bucket];
+// bool check(const char *word) // OK
+// {
+//     // 1) in which bucket would the world be?
+//     int possible_bucket = hash(word);
+//     node *poss_word = table[possible_bucket];
 
-    int LENGTH_BUCKET = length_bucket(possible_bucket);
+//     int LENGTH_BUCKET = length_bucket(possible_bucket);
 
-    // 2) compare 2 words
-    if (compare_two_words(word, poss_word->word)==1)
-    {
-      return true;
-    }
-    else
-    {
-      int iterations = 0;
-      for (int i = 0; i < LENGTH_BUCKET; i++)
-      {
-          poss_word = poss_word->next;
-          if (compare_two_words(word, poss_word->word)==1)
-          {
-            return true;
-          }
-      }
-      // if the word is in the list, it breaks out of the loop, and then we compare the strings to make sure
-      // otherwise, if even the last word in the correct bucket could be the word, we compare them
-      if (strcmp(poss_word->word, word) == 0)
-      {
-        return true;
-      }
-      else // otherwise, the word is not in the dict
-      {
-        printf("ok??\n");
-        return false;
-      }
+//     // 2) compare 2 words
+//     if (compare_two_words(word, poss_word->word)==1)
+//     {
+//       return true;
+//     }
+//     else
+//     {
+//       int iterations = 0;
+//       for (int i = 0; i < LENGTH_BUCKET; i++)
+//       {
+//           poss_word = poss_word->next;
+//           if (compare_two_words(word, poss_word->word)==1)
+//           {
+//             return true;
+//           }
+//       }
+//       // if the word is in the list, it breaks out of the loop, and then we compare the strings to make sure
+//       // otherwise, if even the last word in the correct bucket could be the word, we compare them
+//       if (strcmp(poss_word->word, word) == 0)
+//       {
+//         return true;
+//       }
+//       else // otherwise, the word is not in the dict
+//       {
+//         printf("ok??\n");
+//         return false;
+//       }
 
-      printf("false??\n");
-      return false;
-    }
-}
+//       printf("false??\n");
+//       return false;
+//     }
+// }
 
 // Hashes word to a number
 unsigned int hash(const char *word) // OK FOR NOW
@@ -184,6 +183,7 @@ bool load(const char *dictionary) // OKKKKK
 unsigned int size(void)// OK
 {
     // TODO
+    printf("enter here at size\n");
     char *dictionary = "/Users/marinelegall/code/CS50/05-Data-Structures/speller/dictionaries/small";
     int total_nb = 0;
     for (int i = 0; i < N; i++)
@@ -192,7 +192,7 @@ unsigned int size(void)// OK
       int length = length_bucket(i);
       if (length != -1)
       {
-          printf("LENGTH: %i\n", length);
+          // printf("LENGTH: %i\n", length);
           total_nb += length;
       }
     }
@@ -204,7 +204,72 @@ unsigned int size(void)// OK
 bool unload(void)
 {
     // TODO
+    int bucket = 0;
+
+    for (int i = 0; i < N; i++)
+    {
+      node *next_p = table[i];
+      int LENGTH_BUCKET = 0;
+      for (int k = 0; k < LENGTH_BUCKET; k++)
+      {
+        for (int j = 0; j < LENGTH_BUCKET-k; j++)
+        {
+          next_p = next_p->next; // gets me the last one
+          // next_p->next= next_p;
+        }
+        free(next_p);
+      }
+    }
     return false;
+}
+
+bool check(const char *word) // OK
+{
+    // 1) in which bucket would the world be?
+    int possible_bucket = hash(word);
+    node *poss_word = table[possible_bucket];
+
+    int LENGTH_BUCKET = length_bucket(possible_bucket);
+
+    // 2) compare 2 words
+    if (compare_two_words(word, poss_word->word)==1)
+    {
+      return true;
+    }
+    else
+    {
+      int iterations = 0;
+      for (int i = 0; i < LENGTH_BUCKET-1; i++) // -1 bc I already compared with the 1st one
+      {
+          poss_word = poss_word->next;
+          if (compare_two_words(word, poss_word->word)==1)
+          {
+            return true;
+          }
+          else
+          {
+            printf("dict: %s - compare: %s\n", word, poss_word->word);
+          }
+
+          iterations += 1;
+          // break; --> cannot find from 3rd word onwards but no error
+      }
+      printf("for-loop over\n");
+      // if the word is in the list, it breaks out of the loop, and then we compare the strings to make sure
+      // otherwise, if even the last word in the correct bucket could be the word, we compare them
+      // if (strcmp(poss_word->word, word) == 0)
+      // {
+      //   return true;
+      // }
+      // else // otherwise, the word is not in the dict
+      // {
+      //   printf("false\n");
+      //   return false;
+      // }
+
+      printf("false, not inside.\n");
+      return false;
+    }
 }
 
 
@@ -227,7 +292,8 @@ int main(void)
 
     // compare_two_words("marin", "marin"); // OK
 
-    bool true_false = check("zz");
+    bool true_false = check("zoro");
     printf("\n1 is true, 0 is false? %i\n", true_false); // 1 is true, 0 is false
+    // unload();
 
 }
