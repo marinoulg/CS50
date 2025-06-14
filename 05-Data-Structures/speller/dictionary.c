@@ -32,25 +32,41 @@ bool compare_two_words(const char *word, const char *poss_word) // OK ?
 
     if (strcmp(poss_word, word)==0)
     {
+      printf("True\n");
       return true;
     }
     return false;
 }
 
-int length_bucket(int bucket) // segmentation error/fault
+int length_bucket(int bucket) // OKKK
 {
   node *myword = table[bucket];
-  int length = 0;
+  int length = 1;
   if (table[bucket] != NULL)
   {
-    do
+    // printf("ENTER HERE: \n" );
+    while (myword->next != NULL)
     {
       printf("%s\n", myword->word);
       length += 1;
       myword = myword->next;
+    }
 
-    } while (myword->next != NULL);
-    printf("\n");
+    // } while (myword->next != NULL);
+    // printf("\n");
+    // return length;
+    // node *myword = table[bucket];
+    if (table[bucket]->next == NULL)
+    {
+      // printf("ENTER HERE NOW: \n" );
+      while (myword->next != NULL)
+      {
+
+          // printf("WHILE LOOP LOAD: %s\n", myword->word);
+          myword = myword->next;
+          length += 1;
+      }
+    }
     return length;
   }
   else // if (table[bucket] == NULL)
@@ -157,7 +173,7 @@ bool load(const char *dictionary) // OKKKKK
         while (fscanf(file, "%s", buffer) != -1)
         {
             // 3. create a new node for each word
-            // printf("%s\n", buffer);
+            // printf("buffer %s\n", buffer);
 
             node *n = malloc(sizeof(node));
             if (n != NULL)
@@ -168,6 +184,7 @@ bool load(const char *dictionary) // OKKKKK
 
                 // 4. hash word to obtain a hash value
                 int num = hash(buffer);
+                node *myword = table[num];
                 // printf("num hased is: %i\n\n", num);
 
                 // 5. insert node into hash table at that location
@@ -175,7 +192,21 @@ bool load(const char *dictionary) // OKKKKK
                 {
                   table[num] = n;
                 }
-                // else if (table[num]->next == NULL)
+                else
+                {
+                  myword = table[num];
+                  while (myword->next != NULL)
+                  {
+
+                      // printf("WHILE LOOP LOAD: %s\n", myword->word);
+                      myword = myword->next;
+
+                  }
+                  // printf("%s\n", myword->word);
+                  myword->next = n;
+                }
+
+                // else if (myword->next == NULL)
                 // {
                 //   table[num]->next = n;
                 //   printf("ENTER HERE\n");
@@ -197,32 +228,28 @@ bool load(const char *dictionary) // OKKKKK
                 //   // printf("my pointer: %p \n", my_pointer);
                 //   // table[num].next_one = n;
                 // }
-                else
-                {
-                  node *myword = table[num];
-                  while (myword->next != NULL)
-                  {
-
-                      printf("WHILE LOOP LOAD: %s\n", myword->word);
-                      myword = myword->next;
-
-                  }
-                  // printf("%s\n", myword->word);
-                  myword = n;
-                }
-
-
-                // else if (table[num]->next->next == NULL)
+                // else
                 // {
-                //   table[num]->next->next = n;
+                //   // node *myword = table[num];
+                //   do
+                //   {
+                //       printf("WHILE LOOP LOAD: %s\n", myword->word);
+                //       myword = myword->next;
+                //   } while (myword->next != NULL);
+                //   // printf("%s\n", myword->word);
+                //   myword = n;
                 // }
-                // else if (table[num]->next->next->next == NULL)
+                // else if (myword->next->next == NULL)
                 // {
-                //   table[num]->next->next->next = n;
+                //   myword->next->next = n;
                 // }
-                // else if (table[num]->next->next->next->next == NULL)
+                // else if (myword->next->next->next == NULL)
                 // {
-                //   table[num]->next->next->next->next = n;
+                //   myword->next->next->next = n;
+                // }
+                // else if (myword->next->next->next->next == NULL)
+                // {
+                //   myword->next->next->next->next = n;
                 // }
             }
         }
@@ -303,17 +330,22 @@ int main(void)
 {
     char *dictionary = "/Users/marinelegall/code/CS50/05-Data-Structures/speller/dictionaries/small";
     load(dictionary);
-    // int total_words = size();
-    // printf("\nthere are %i words in this dict\n", total_words);
+    int total_words = size();
+    printf("\nthere are %i words in this dict\n", total_words);
     // // int bucket = hash("zz");
     // // printf("int %i\n", hello);
     // // printf("length %i\n", length_bucket(2));
     // // printf("length %i\n", length_bucket(11));
-    printf("length of C: %i\n", length_bucket(2)); // segmentation fault
+    // printf("length of Z: %i\n", length_bucket(25)); // segmentation fault
     // printf("%s\n", table[3]->word);
-    // printf("%p\n", table[3]->next);
+    // printf("\n");
+    // printf("%s\n", table[2]->word);
+    // printf("%s\n", table[2]->next->word);
+    // printf("%s\n", table[2]->next->next->word);
 
-    // bool true_false = check("zzo");
+    compare_two_words("marin", "marin");
+
+    // bool true_false = check("zz");
     // printf("\n1 is true, 0 is false? %i\n", true_false); // 1 is true, 0 is false
 
 }
