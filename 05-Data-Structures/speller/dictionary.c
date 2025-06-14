@@ -10,7 +10,6 @@
 
 #include "dictionary.h"
 
-char *DICT = "/Users/marinelegall/code/CS50/05-Data-Structures/speller/dictionaries/large";
 
 // Represents a node in a hash table
 typedef struct node
@@ -20,9 +19,10 @@ typedef struct node
 } node;
 
 bool compare_two_words(const char *word, const char *poss_word);
-int length_bucket(int bucket);
-unsigned int hash(const char *word);
-bool load(const char *DICT);
+int length_bucket(int bucket); // Can hold both positive and negative whole numbers.
+unsigned int hash(const char *word); // Unsigned integer type: can only hold non-negative whole numbers (zero or positive).
+// const means read-only after initialization — you cannot change the value once set.
+bool load(const char *dictionary);
 unsigned int size(void);
 
 // TODO: Choose number of buckets in hash table
@@ -124,11 +124,11 @@ unsigned int hash(const char *word) // OK FOR NOW
 }
 
 // Loads dictionary into memory, returning true if successful, else false
-bool load(const char *DICT) // OKKKKK
+bool load(const char *dictionary) // OKKKKK
 {
     // 1. open dictionary file
-    printf("Trying to load file: %s\n", DICT);
-    FILE *file = fopen(DICT, "r");
+    printf("Trying to load file: %s\n", dictionary);
+    FILE *file = fopen(dictionary, "r");
 
     // 2. read strings from file one at a time
     if (file != NULL)
@@ -196,7 +196,7 @@ unsigned int size(void)// OK
     // TODO
     printf("enter here at size\n");
     int total_nb = 0;
-    for (int i = 0; i < N; i++)
+    for (unsigned int i = 0; i < N; i++)
     {
 
       int length = length_bucket(i);
@@ -214,22 +214,22 @@ unsigned int size(void)// OK
 bool unload(void)
 {
     // TODO
-    int bucket = 0;
+    // int bucket = 0;
 
-    for (int i = 0; i < N; i++)
-    {
-      node *next_p = table[i];
-      int LENGTH_BUCKET = 0;
-      for (int k = 0; k < LENGTH_BUCKET; k++)
-      {
-        for (int j = 0; j < LENGTH_BUCKET-k; j++)
-        {
-          next_p = next_p->next; // gets me the last one
-          // next_p->next= next_p;
-        }
-        free(next_p);
-      }
-    }
+    // for (int i = 0; i < N; i++)
+    // {
+    //   node *next_p = table[i];
+    //   int LENGTH_BUCKET = 0;
+    //   for (int k = 0; k < LENGTH_BUCKET; k++)
+    //   {
+    //     for (int j = 0; j < LENGTH_BUCKET-k; j++)
+    //     {
+    //       next_p = next_p->next; // gets me the last one
+    //       // next_p->next= next_p;
+    //     }
+    //     free(next_p);
+    //   }
+    // }
     return false;
 }
 
@@ -237,65 +237,81 @@ bool check(const char *word) // OK
 {
     // 1) in which bucket would the world be?
     int possible_bucket = hash(word);
-    node *poss_word = table[possible_bucket];
-
-    int LENGTH_BUCKET = length_bucket(possible_bucket);
-
-    // 2) compare 2 words
-    if (compare_two_words(word, poss_word->word)==1)
+    if (table[possible_bucket] == NULL)
     {
-      return true;
+        return false;
     }
+
+    if (possible_bucket >= 0)
+    {
+
+        node *poss_word = table[possible_bucket];
+        int LENGTH_BUCKET = length_bucket(possible_bucket);
+
+        // 2) compare 2 words
+        if (compare_two_words(word, poss_word->word)==1)
+        {
+          return true;
+        }
+        else
+        {
+          // int iterations = 0;
+          for (int i = 0; i < LENGTH_BUCKET-1; i++) // -1 bc I already compared with the 1st one
+          {
+              poss_word = poss_word->next;
+              if (poss_word == NULL)
+              {
+                return false;
+              }
+              else if (compare_two_words(word, poss_word->word)==1)
+              {
+                return true;
+              }
+              else
+              {
+                printf("dict: %s - compare: %s\n", word, poss_word->word);
+              }
+
+              // iterations += 1;
+              // break; --> cannot find from 3rd word onwards but no error
+          }
+          printf("for-loop over\n");
+          // if the word is in the list, it breaks out of the loop, and then we compare the strings to make sure
+          // otherwise, if even the last word in the correct bucket could be the word, we compare them
+          // if (strcmp(poss_word->word, word) == 0)
+          // {
+          //   return true;
+          // }
+          // else // otherwise, the word is not in the dict
+          // {
+          //   printf("false\n");
+          //   return false;
+          // }
+
+          printf("false, not inside.\n");
+          return false;
+        }
+    }
+
     else
     {
-      int iterations = 0;
-      for (int i = 0; i < LENGTH_BUCKET-1; i++) // -1 bc I already compared with the 1st one
-      {
-          poss_word = poss_word->next;
-          if (poss_word == NULL)
-          {
-            return false;
-          }
-          else if (compare_two_words(word, poss_word->word)==1)
-          {
-            return true;
-          }
-          else
-          {
-            printf("dict: %s - compare: %s\n", word, poss_word->word);
-          }
-
-          iterations += 1;
-          // break; --> cannot find from 3rd word onwards but no error
-      }
-      printf("for-loop over\n");
-      // if the word is in the list, it breaks out of the loop, and then we compare the strings to make sure
-      // otherwise, if even the last word in the correct bucket could be the word, we compare them
-      // if (strcmp(poss_word->word, word) == 0)
-      // {
-      //   return true;
-      // }
-      // else // otherwise, the word is not in the dict
-      // {
-      //   printf("false\n");
-      //   return false;
-      // }
-
-      printf("false, not inside.\n");
       return false;
     }
+
 }
 
 
-int main(void)
+int main(void) // compares 1 word with the dict
 {
+    char *DICT = "dictionaries/large";
+
     if (load(DICT)==1)
     {
       printf("Loaded.\n");
     }
     else
     {
-      printf("Loading failed.\n");
+      printf("Loading failed OK.\n");
     }
 
     // printf("\nbefore size\n");
@@ -314,8 +330,8 @@ int main(void)
 
     // // compare_two_words("marin", "marin"); // OK
 
-    // bool true_false = check("zoro");
-    // printf("\n1 is true, 0 is false? %i\n", true_false); // 1 is true, 0 is false
+    bool true_false = check("zoro");
+    printf("\n1 is true, 0 is false? %i\n", true_false); // 1 is true, 0 is false
     // unload();
 
 }
