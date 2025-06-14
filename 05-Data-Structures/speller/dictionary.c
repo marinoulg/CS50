@@ -44,7 +44,6 @@ int length_bucket(int bucket) // OKKK
   int length = 1;
   if (table[bucket] != NULL)
   {
-    // printf("ENTER HERE: \n" );
     while (myword->next != NULL)
     {
       printf("%s\n", myword->word);
@@ -52,28 +51,17 @@ int length_bucket(int bucket) // OKKK
       myword = myword->next;
     }
 
-    // } while (myword->next != NULL);
-    // printf("\n");
-    // return length;
-    // node *myword = table[bucket];
     if (table[bucket]->next == NULL)
     {
-      // printf("ENTER HERE NOW: \n" );
       while (myword->next != NULL)
       {
-
-          // printf("WHILE LOOP LOAD: %s\n", myword->word);
           myword = myword->next;
           length += 1;
       }
     }
     return length;
   }
-  else // if (table[bucket] == NULL)
-  // {
-  //   table[bucket] = myword;
-  // }
-
+  else
   {
     return -1;
   }
@@ -197,77 +185,17 @@ bool load(const char *dictionary) // OKKKKK
                   myword = table[num];
                   while (myword->next != NULL)
                   {
-
                       // printf("WHILE LOOP LOAD: %s\n", myword->word);
                       myword = myword->next;
-
                   }
                   // printf("%s\n", myword->word);
                   myword->next = n;
                 }
-
-                // else if (myword->next == NULL)
-                // {
-                //   table[num]->next = n;
-                //   printf("ENTER HERE\n");
-                //   printf("WORD IS %s\n", table[num]->word);
-                //   // printf("WORD IS %s\n", table[num]->next->word);
-                //   // printf("pointerrrr IS %p\n", table[num]->next->word);
-                //   // printf("pointerrrr IS %p\n", (table[num]->next->next));
-                //   // int nb_iterations = 0;
-                //   // while (table[num] != NULL)
-                //   // {
-                //   //     // table[num]->next;
-                //   //     nb_iterations += 1;
-                //   //     printf("BEFORE: %p\n", table[num]);
-                //   //     table[num] = table[num]->next;
-                //   //     printf("AFTER: %p\n", table[num]);
-                //   //     printf("nb iterations: %i\n", nb_iterations);
-                //   //     // node *my_pointer = table[num]->next;
-                //   // }
-                //   // printf("my pointer: %p \n", my_pointer);
-                //   // table[num].next_one = n;
-                // }
-                // else
-                // {
-                //   // node *myword = table[num];
-                //   do
-                //   {
-                //       printf("WHILE LOOP LOAD: %s\n", myword->word);
-                //       myword = myword->next;
-                //   } while (myword->next != NULL);
-                //   // printf("%s\n", myword->word);
-                //   myword = n;
-                // }
-                // else if (myword->next->next == NULL)
-                // {
-                //   myword->next->next = n;
-                // }
-                // else if (myword->next->next->next == NULL)
-                // {
-                //   myword->next->next->next = n;
-                // }
-                // else if (myword->next->next->next->next == NULL)
-                // {
-                //   myword->next->next->next->next = n;
-                // }
             }
         }
         fclose(file);
         // printf("\nNumber of words: %p\n", &number_of_words);
         printf("Number of words: %i\n", number_of_words);
-
-        // printf("string %s\n", table[2]->word);
-        // printf("string %s\n", table[2]->next->word);
-        // printf("string %s\n", table[2]->next->next->word);
-        // printf("string %s\n", table[11]->word);
-        // printf("string %s\n", table[12]->word);
-        // printf("string %s\n", table[13]->word);
-        // printf("string %s\n", table[25]->word);
-        // printf("string %s\n", table[25]->next->word);
-        // printf("string %s\n", table[25]->next->next->word);
-        // printf("string %s\n", table[25]->next->next->next->word);
-        // printf("string %s\n", table[25]->next->next->next->next->word);
         return true;
     }
     else
@@ -278,41 +206,20 @@ bool load(const char *dictionary) // OKKKKK
 }
 
 // Returns number of words in dictionary if loaded, else 0 if not yet loaded
-unsigned int size(void)
+unsigned int size(void)// OK
 {
     // TODO
     char *dictionary = "/Users/marinelegall/code/CS50/05-Data-Structures/speller/dictionaries/small";
-    printf("ok cool\n");
-    // if (load(dictionary) == true)
-    // {
-    //   printf("ok\n");
-    //   return 0;
-    // }
-    // else
-    // {
-    //   return -1;
-    // }
-
     int total_nb = 0;
     for (int i = 0; i < N; i++)
     {
-      // if (table[i]->next != NULL)
-      // {
+
       int length = length_bucket(i);
       if (length != -1)
       {
           printf("LENGTH: %i\n", length);
           total_nb += length;
       }
-
-      // }
-      // else
-      // {
-      //   i += 1;
-      //   printf("here %i is \n", i);
-
-      // }
-
     }
 
     return total_nb;
