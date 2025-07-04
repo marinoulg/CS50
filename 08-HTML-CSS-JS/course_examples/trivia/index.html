@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+        <title>Trivia!</title>
+        <script>
+            // TODO: Add code to check answers to questions
+            // user has correct answer ? --> know here
+
+            // #incorrect p1
+            // {
+                // button turns red
+                // text appears beneath question "Incorrect"
+            // }
+
+            // correct p1
+            // {
+                // button turns green
+                // text appears beneath question "Correct!"
+            // }
+
+            // incorrect p2
+            //  the text field should turn red and text should appear beneath the question that says “Incorrect”.
+
+            // correct p2
+            //  the input field should turn green and text should appear beneath the question that says “Correct!”.
+
+
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Trivia!</h1>
+        </div>
+
+        <div class="container">
+            <div class="section">
+                <h2>Part 1: Multiple Choice </h2>
+                <hr>
+                <!-- TODO: Add multiple choice question here -->
+                <h3>In what country did the first Starbucks open outside of North America?</h3>
+                <button type="button" onclick="alert('correct')">Japan</button>
+                <button type="button" onclick="incorrect">Germany</button>
+                <button type="button" onclick="incorrect">Belgium</button>
+
+
+            </div>
+
+            <div class="section">
+                <h2>Part 2: Free Response</h2>
+                <hr>
+                <!-- TODO: Add free response question here -->
+                 <h3>In what year was the Internet opened to the public?</h3>
+                 <!-- answer: 1993 -->
+                  <form>
+                    <input autocomplete="off" autofocus name="answer">
+                    <input type="submit" value="Check Answer">
+                  </form>
+
+            </div>
+        </div>
+    </body>
+</html>
